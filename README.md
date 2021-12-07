@@ -1,4 +1,4 @@
-# Project Name
+# Kubernetes Blue-Green and Canary Deployment
 
 (short, 1-3 sentenced, description of the project)
 
