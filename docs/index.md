@@ -1,20 +1,18 @@
 # Guide to "blue-green" and "canary" deployments using GitHub Actions
 
 ## What is Blue/Green deployment strategy in Kubernetes?
-| ![blue-green-deploy-process](https://github.com/gauravthakur02/action-deployments/blob/2c3e03a0bc9503d87dbcf17606b6cdd377c77925/img/blue-green-deployment-process.gif) |
-| :--: |
-| *Blue/Green Deployment* |
+![blue-green-deploy-process](img/blue-green-deployment-process.gif)
+*Blue/Green Deployment*
 >Blue/Green deployments are a form of progressive delivery where a new version of the application is deployed while the old version still exists. The two versions coexist for a brief period of time while user traffic is routed to the new version, before the old version is discarded (if all goes well).
 
 ---
 ## What is Canary deployment strategy in Kubernetes?
-| ![canary-deploy-process](https://github.com/gauravthakur02/action-deployments/blob/2c3e03a0bc9503d87dbcf17606b6cdd377c77925/img/canary-deploy.gif) |
-| :--: |
-| *Canary Deployment* |
+![canary-deploy-process](img/canary-deploy.gif)
+*Canary Deployment*
 >Canary deployment strategy involves deploying new versions of an application next to stable production versions to see how the canary version compares against the baseline before promoting or rejecting the deployment. 
 
 ---
-### **This is a simple tutorial on how to do [Blue/Green Deployment] and [Canary Deployment] on Kubernetes.**
+### **This is a simple tutorial on how to do [Blue/Green Deployment] on Kubernetes.**
 
 ### Prerequisites
 * Any Kubernetes cluster 1.3+ should work. Create an [AKS Cluster](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough) using [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/):
@@ -34,7 +32,8 @@ az aks stop --name myAKSCluster --resource-group myResourceGroup
 ---
 1. **Create Docker image from Dockerfile in `/nginx-html`:**
 >Edit the `index.html` file to get different webpage message on each new docker image created from the below `Dockerfile`. (For this demo, I have created two docker images "_demo.azurecr.io/blue-nginx:1_" and "_demo.azurecr.io/green-nginx:1_")
-```Dockerfile
+
+```
 FROM ubuntu
 
 RUN apt-get update
@@ -65,7 +64,7 @@ docker push demo.azurecr.io/green-nginx:1
 ---
 2. **Create Kubernetes manifest files in `/kubernetes`:**
 * Create `blue-deploy.yaml` file:
-```yml
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -95,7 +94,7 @@ spec:
               memory: 500Mi
 ```
 * Create `green-deploy.yaml` file:
-```yml
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -125,7 +124,7 @@ spec:
               memory: 500Mi
 ```
 * Create `service.yaml` file:
-```yml
+```
 apiVersion: v1
 kind: Service
 metadata: 
@@ -144,7 +143,7 @@ spec:
 ---
 3. **Create GitHub Actions workflow in `/.github/workflows`:**
 * For Blue/Green deployment, create `blue-green.yaml` file:
-```yml
+```
 # This is a basic workflow to help you get started with Actions
 name: Blue-Green-strategy
 
@@ -252,7 +251,7 @@ jobs:
 | :--: |
 | *Blue/Green Deployment Workflow* |
 * For Canary deployment, create `canary.yaml` file:
-```yml
+```
 # This is a basic workflow to help you get started with Actions
 
 name: Canary-strategy
@@ -361,9 +360,8 @@ jobs:
           percentage: 20
           baseline-and-canary-replicas: 2
 ```
-| ![Canary Deployment Workflow](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/canary.png) |
-| :--: |
-| *Canary Deployment Workflow* |
+![Canary Deployment Workflow](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/canary/canary.png)
+*Canary Deployment Workflow*
 
 ---
 4. **Run the `blue-green-strategy` workflow:**
@@ -431,16 +429,14 @@ jobs:
 >Secrets are environment variables that are encrypted. Anyone with collaborator access to this repository can use these secrets for Actions.
 Secrets are not passed to workflows that are triggered by a pull request from a fork. Learn more about secrets [here](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-storing-encrypted-secrets).
 
-| ![secrets](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/secrets.png) |
-| :--: |
-| *Action Secrets* |
+![secrets](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/secrets.png)
+*Action Secrets*
 * Environments:
 >Environments are used to describe a general deployment target like `production`, `staging`, or `development`. When a GitHub Actions workflow deploys to an environment, the environment is displayed on the main page of the repository.
 Learn more about [environments](https://help.github.com/en/github/working-with-github-actions/managing-environments-in-github-actions).
 
-| ![environments](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/environments.png) |
-| :--: |
-| *Environments* |
+| ![environments](https://github.com/gauravthakur02/action-deployments/blob/3ee4eb928fa43851e3d27c4f6c39f279f85c2968/img/environments.png)
+*Environments*
 
 ---
 ## Authors
