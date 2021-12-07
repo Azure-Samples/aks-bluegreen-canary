@@ -443,9 +443,3 @@ Learn more about [environments](https://help.github.com/en/github/working-with-g
 | *Environments* |
 
 ---
-## Authors
-<a href="https://github.com/gauravthakur02/action-deployments/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=gauravthakur02/action-deployments" />
-</a>
-
-- **Gaurav Thakur** - [LinkedIn](https://www.linkedin.com/in/gaurav-kumar-04305411a/)
