@@ -15,7 +15,7 @@ spec:
     spec:
       containers: 
         - name: nginx
-          image: demogaurav.azurecr.io/green-nginx:1
+          image: registryk8demo01.azurecr.io/green-nginx:1
           ports:
             - name: http
               containerPort: 80
